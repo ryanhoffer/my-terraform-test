@@ -2,57 +2,55 @@ terraform {
   required_version = ">= 1.0"
 }
 
-# Deploy a Node.js application
-resource "null_resource" "deploy_node_app" {
+# Install and configure nginx (much more reliable)
+resource "null_resource" "deploy_nginx" {
   triggers = {
-    app_version = "1.0.0"
+    always_run = timestamp()
   }
 
   provisioner "local-exec" {
     command = <<EOT
-      # Create app directory
-      mkdir -p /home/ubuntu/my-app
-      cd /home/ubuntu/my-app
+      # Update and install nginx
+      sudo apt update
+      sudo apt install -y nginx
 
-      # Create package.json
-      cat > package.json << 'EOF'
-      {
-        "name": "my-app",
-        "version": "1.0.0",
-        "scripts": {
-          "start": "node server.js"
-        },
-        "dependencies": {
-          "express": "^4.18.0"
-        }
-      }
-      EOF
+      # Create a custom HTML page
+      sudo tee /var/www/html/index.html > /dev/null << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terraform + Atlantis Success!</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f8ff; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c5aa0; }
+        .success { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Success! Website Deployed via Terraform + Atlantis</h1>
+        <p class="success">This page was automatically deployed from a GitHub Pull Request!</p>
+        <p><strong>Deployment Method:</strong> Terraform + Atlantis on Hostinger VPS</p>
+        <p><strong>Timestamp:</strong> $(date)</p>
+        <p><strong>Infrastructure as Code:</strong> Working perfectly! 🚀</p>
+    </div>
+</body>
+</html>
+EOF
 
-      # Create server.js
-      cat > server.js << 'EOF'
-      const express = require('express');
-      const app = express();
-      const port = 3000;
-
-      app.get('/', (req, res) => {
-        res.send('Hello from Terraform + Atlantis on Hostinger VPS');
-      });
-
-      app.listen(port, '0.0.0.0', () => {
-        console.log(`App running on port`);
-      });
-      EOF
-
-      # Install and start
-      npm install
-      npm install -g pm2
-      pm2 start server.js --name "my-app"
-      pm2 save
-      pm2 startup
+      # Ensure nginx is running
+      sudo systemctl start nginx
+      sudo systemctl enable nginx
+      
+      # Allow HTTP traffic
+      sudo ufw allow 'Nginx HTTP'
+      
+      echo "Nginx deployed and running on port 80"
     EOT
   }
 }
 
-output "app_url" {
-  value = "http://http://82.29.197.135:3000"
+output "website_url" {
+  value = "http://82.29.197.135/"
 }
