@@ -10,7 +10,7 @@ resource "null_resource" "test" {
   }
   
   provisioner "local-exec" {
-    command = "echo 'Terraform executed via Atlantis'"
+    command = "echo 'Terraform executed via Atlantis!'"
   }
 }
 
