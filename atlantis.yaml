@@ -1,0 +1,9 @@
+# atlantis.yaml
+version: 3
+automerge: false
+projects:
+- name: my-terraform-project
+  dir: .
+  autoplan:
+    enabled: true
+    when_modified: ["*.tf", "*.tfvars"]
