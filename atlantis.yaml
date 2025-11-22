@@ -1,22 +1,9 @@
 version: 3
 automerge: false
-allowed_overrides: [workflow]
-allow_custom_workflows: true
 
 projects:
-- name: my-terraform-project
+- name: hostinger-deployment
   dir: .
   autoplan:
     enabled: true
     when_modified: ["*.tf", "*.tfvars"]
-  workflow: default
-
-workflows:
-  default:
-    plan:
-      steps:
-      - init
-      - plan
-    apply:
-      steps:
-      - apply
