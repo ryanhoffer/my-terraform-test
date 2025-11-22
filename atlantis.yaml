@@ -1,4 +1,3 @@
-# atlantis.yaml
 version: 3
 automerge: false
 projects:
@@ -7,3 +6,14 @@ projects:
   autoplan:
     enabled: true
     when_modified: ["*.tf", "*.tfvars"]
+  workflow: default
+
+workflows:
+  default:
+    plan:
+      steps:
+      - init
+      - plan
+    apply:
+      steps:
+      - apply
