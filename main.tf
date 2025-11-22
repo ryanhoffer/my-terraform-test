@@ -25,5 +25,5 @@ resource "null_resource" "web_server" {
 }
 
 output "url" {
-  value = "http://YOUR_VPS_IP"
+  value = "http://82.29.197.135/"
 }
