@@ -35,7 +35,7 @@ resource "null_resource" "deploy_node_app" {
       const port = 3000;
 
       app.get('/', (req, res) => {
-        res.send('Hello from Terraform + Atlantis on Hostinger VPS!');
+        res.send('Hello from Terraform + Atlantis on Hostinger VPS');
       });
 
       app.listen(port, '0.0.0.0', () => {
