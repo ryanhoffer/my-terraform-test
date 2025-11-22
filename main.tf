@@ -54,5 +54,5 @@ resource "null_resource" "deploy_node_app" {
 }
 
 output "app_url" {
-  value = "http://http://82.29.197.135/:3000"
+  value = "http://http://82.29.197.135:3000"
 }
