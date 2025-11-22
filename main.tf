@@ -39,7 +39,7 @@ resource "null_resource" "deploy_node_app" {
       });
 
       app.listen(port, '0.0.0.0', () => {
-        console.log(`App running on port ${port}`);
+        console.log(`App running on port`);
       });
       EOF
 
